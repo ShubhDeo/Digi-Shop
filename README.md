@@ -16,7 +16,7 @@ Ecommerce website using MERN and Redux.
 - Admin Order details page
 - Mark orders as delivered option
 - Checkout process (shipping, payment method, etc)
-- Razorpay / credit card integration / Cash on Delivery
+- Razorpay Integration(Credit/Debit/Netbanking/UPI) / Cash on Delivery Feature
 - Database seeder (products & users)
 - Firebase media storage
 
