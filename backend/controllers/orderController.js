@@ -58,13 +58,11 @@ const getOrderById = asyncHandler(async (req, res) => {
 const updateOrderToPaid = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id)
     if (order) {
+        const {payment_id, payment_order_id, payment_signature} = req.body;
         order.isPaid = true
         order.paidAt = Date.now()
         order.paymentResult = {
-            id: req.body.id,
-            status: req.body.status,
-            update_time: req.body.update_time,
-            email_address: req.body.payer.email_address
+            payment_id,payment_order_id,payment_signature
         }
 
         const updatedOrder = await order.save()
@@ -83,7 +81,8 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     if (order) {
         order.isDelivered = true
         order.deliveredAt = Date.now()
-        if (order.paymentMethod === 'Cash On Delivery') {
+
+        if (!order.isPaid) {
             order.isPaid = true
             order.paidAt = Date.now()
         }

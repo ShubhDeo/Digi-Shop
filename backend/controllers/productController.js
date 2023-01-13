@@ -7,7 +7,7 @@ import Fuse from 'fuse.js'
 // @route /api/products
 // @access Public route
 const getProducts = asyncHandler(async (req, res) => {
-    const pageSize = 10
+    const pageSize = 8
     const page = Number(req.query.pageNumber) || 1
 
     const keyword = req.query.keyword
@@ -20,7 +20,7 @@ const getProducts = asyncHandler(async (req, res) => {
         : {}
 
     const count = await Product.countDocuments({ ...keyword })
-    const products = await Product.find({ ...keyword })
+    const products = await Product.find({ ...keyword})
         .limit(pageSize)
         .skip(pageSize * (page - 1))
 
@@ -80,7 +80,7 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route PUT /api/products/:id
 // @access Private/Admin route
 const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, image, brand, category, countInStock } = req.body
+    const { name, price,publish, description, image, brand, category, countInStock } = req.body
     const product = await Product.findById(req.params.id)
     if (product) {
         product.name = name
@@ -90,6 +90,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.brand = brand
         product.category = category
         product.countInStock = countInStock
+        product.publish  = publish
 
         const updatedProduct = await product.save()
         res.json(updatedProduct)
@@ -137,7 +138,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 // @route GET /api/products/top
 // @access Public route
 const getTopProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({ rating: -1 }).limit(3)
+    const products = await Product.find({publish: true}).sort({ rating: -1 }).limit(3)
     res.json(products)
 })
 

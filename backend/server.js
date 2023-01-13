@@ -9,14 +9,19 @@ import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 
+
 //Init
 const app = express()
 app.use(express.json()) //body parser
 dotenv.config()
 
+
+
+
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
+
 
 
 //Connect to DB
@@ -29,6 +34,9 @@ app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID)
+})
+app.get('/api/config/razorpay', (req,res)=> {
+    res.status(200).json({key_id: process.env.RAZORPAY_KEY_ID, key_secret:process.env.RAZORPAY_KEY_SECRET})
 })
 app.use('/api/upload', uploadRoutes)
 
