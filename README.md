@@ -32,6 +32,7 @@ npm start
 # Run backend only
 Go to the backend directory and run
 nodemon server.js
+```
 
 ### Seed Database
 
